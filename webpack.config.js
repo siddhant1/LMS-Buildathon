@@ -5,7 +5,6 @@ var config = {
   entry: ['./src/main.ts'],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '',
     filename: 'bundle.js'
   },
   resolve: {
@@ -17,6 +16,10 @@ var config = {
         test: /\.ts?$/,
         loader: 'ts-loader',
         exclude: /node_modules/
+      },
+      {
+        test: /\.scss$/,
+        loaders: [ 'style-loader', 'css-loader', 'sass-loader' ]
       }
     ]
   },
