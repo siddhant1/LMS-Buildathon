@@ -8,29 +8,31 @@ describe('CanvasComponent', () => {
   let component: CanvasComponent;
   let drawingService: DrawingService;
 
-  const toolEventMock = (x: number = 100, y: number = 100): ToolEvent|any => {
-    const event: ToolEvent|any = new ToolEvent();
-    event.tool = component.tool;
-    event.point = new Point(x, y);
-    return event;
-  }
-
   interface IPoint {
     x: number;
     y: number
   }
 
+  const toolEventMock = (point: IPoint = {x: 100, y: 100}): ToolEvent|any => {
+    const event: ToolEvent|any = new ToolEvent();
+    event.tool = component.tool;
+    event.point = new Point(point.x, point.y);
+    return event;
+  }
+
   const drawLine = (from: IPoint, to: IPoint): void => {
-    component.mouseDown(toolEventMock(from.x, from.x));
-    component.mouseDrag(toolEventMock(to.x, to.y));
-    component.mouseUp(toolEventMock(to.x, to.y));
+    component.mouseDown(toolEventMock(from));
+    component.mouseDrag(toolEventMock(to));
+    component.mouseUp(toolEventMock(to));
   }
 
   const getRandomPixel = (max: number = 400): number => Math.floor(Math.random() * max);
 
+  const getRandomPoint = (): IPoint => ({x: getRandomPixel(), y: getRandomPixel()});
+
   const drawLines = (number: number): void => {
     for (let i = 0; i < number; i++) {
-      drawLine({x: getRandomPixel(), y: getRandomPixel()}, {x: getRandomPixel(), y: getRandomPixel()});
+      drawLine(getRandomPoint(), getRandomPoint());
     }
   }
 

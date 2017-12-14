@@ -1,5 +1,4 @@
 import AppComponent from './app/AppComponent';
-import ToolbarComponent from './toolbar/ToolbarComponent';
 
 const $app = document.getElementById('app');
 if ($app) {

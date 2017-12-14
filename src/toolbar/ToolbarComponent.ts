@@ -32,7 +32,7 @@ export default class ToolbarComponent extends DefaultComponent {
 
 
   /**
-   * Represents an ToolbarComponent
+   * Represents a ToolbarComponent
    * @constructor
    * @param {HTMLElement} $element - dom element whenever all starts
    * @param {DrawingService} drawingService - 'injected' service
