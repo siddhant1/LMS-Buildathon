@@ -3,7 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var config = {
-  entry: ['./src/main.ts'],
+  entry: ['./src/main.tsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -14,7 +14,7 @@ var config = {
   module: {
     loaders: [
       {
-        test: /\.ts?$/,
+        test: /\.(ts|tsx)?$/,
         loader: 'ts-loader',
         exclude: /node_modules/
       },
@@ -27,6 +27,9 @@ var config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: 'src/index.html'
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify('development')
     })
   ]
 }

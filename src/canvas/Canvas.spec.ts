@@ -1,4 +1,4 @@
-import CanvasComponent from './CanvasComponent';
+import CanvasComponent from './Canvas';
 import DrawingService from '../shared/DrawingService';
 import { Tool, ToolEvent, PaperScope, Point } from 'paper';
 
