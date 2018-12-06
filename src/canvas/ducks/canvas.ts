@@ -1,32 +1,49 @@
 import { Map as iMap } from 'immutable';
 
-const initialState = iMap({
-  snapshots: <string[]>[],
-  version: <number>0
+/**
+ * @interface CanvasState
+ */
+interface ICanvasState {
+  snapshots: string[];
+  version: number;
+}
+
+/**
+ * @interface ImmutableCanvasState
+ * @extends iMap<string, any>
+ * @prop {Function} toJS
+ * @prop {Function} get
+ */
+export interface ImmutableCanvasState extends iMap<string, any> {
+  toJS(): ICanvasState;
+  get<K extends keyof ICanvasState>(key: K): ICanvasState[ K ];
+}
+
+const initialState: ImmutableCanvasState = iMap({
+  snapshots: [],
+  version: 0
 });
 
-const ADD_SNAPSHOT: string = 'ADD_SNAPSHOT';
-const EMPTY_SNAPSHOTS: string = 'EMPTY_SNAPSHOTS';
-const PREVOUS_VERSION: string = 'PREVOUS_VERSION';
-const NEXT_VERSION: string = 'NEXT_VERSION';
+const ADD_SNAPSHOT = 'ADD_SNAPSHOT';
+const EMPTY_SNAPSHOTS = 'EMPTY_SNAPSHOTS';
+const PREVOUS_VERSION = 'PREVOUS_VERSION';
+const NEXT_VERSION = 'NEXT_VERSION';
 
 
 export default function reducer(state = initialState, action: any = {}) {
 
-  const version: number = <number>state.get('version');
-  const snapshots: string[] = <string[]>state.get('snapshots');
+  const version: number = state.get('version');
+  const snapshots: string[] = state.get('snapshots');
 
   switch (action.type) {
 
     case EMPTY_SNAPSHOTS:
-      let empty_state = state.set('version', 0);
-      return empty_state = empty_state.set('snapshots', []);
+      return state.set('snapshots', []).set('version', 0);
 
     case ADD_SNAPSHOT:
       snapshots.splice(version + 1, snapshots.length - version, action.snapshot);
       const newVersion: number = snapshots.length - 1;
-      const add_state = state.set('snapshots', snapshots);
-      return add_state.set('version', (newVersion < 0) ? 0 : newVersion);
+      return state.set('snapshots', snapshots).set('version', (newVersion < 0) ? 0 : newVersion);
 
     case PREVOUS_VERSION:
       let prevVersion: number = version - 1;

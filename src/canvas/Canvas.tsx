@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { PaperScope, Tool, ToolEvent, Path, Layer } from 'paper';
 
 import './Canvas.scss';
@@ -10,28 +10,27 @@ import './Canvas.scss';
  * @extends Component
  * @example <Canvas />
  */
-class Canvas extends Component<any, any> {
+class Canvas extends React.PureComponent<any, any> {
 
   /**
    * @prop {PaperScope} paper - paper project instance
    * @public
    */
-  paper: PaperScope;
+  paper?: PaperScope;
 
 
   /**
    * @prop {Tool} tool - handles the mouse events in the canvas.
    * @public
    */
-  tool: Tool;
+  tool?: Tool;
 
 
   /**
-  
    * @prop {Path} path - drawing path, all new points while mouse drag will be added to this path
    * @public
    */
-  path: Path;
+  path?: Path;
 
 
   /**
@@ -39,9 +38,11 @@ class Canvas extends Component<any, any> {
    * @public
    */
   emptyCanvas(): void {
-    this.paper.project.activeLayer.removeChildren();
-    this.paper.view.draw();
-    this.paper.view.update();
+    if (this.paper) {
+      this.paper.project.activeLayer.removeChildren();
+      this.paper.view.draw();
+      this.paper.view.update();
+    }
   }
 
 
@@ -73,8 +74,10 @@ class Canvas extends Component<any, any> {
    * @public
    */
   mouseDrag(event: ToolEvent): void {
-    this.path.add(event.point);
-    this.path.smooth();
+    if (this.path) {
+      this.path.add(event.point);
+      this.path.smooth();
+    }
   }
 
 
@@ -85,7 +88,9 @@ class Canvas extends Component<any, any> {
    * @public
    */
   mouseUp(event: ToolEvent): void {
-    this.props.addSnapShot(this.paper.project.exportJSON());
+    if (this.paper) {
+      this.props.addSnapShot(this.paper.project.exportJSON());
+    }
   }
 
 
@@ -108,26 +113,26 @@ class Canvas extends Component<any, any> {
     this.tool.onMouseUp = this.mouseUp.bind(this);
   }
 
-
-  // ESTO ES UNA GUARRADA
   componentDidUpdate() {
-    console.log('state', this.props.version, this.props.snapshots.length);
-    if (this.props.version === 0 && this.props.snapshots.length === 1) {
+    if (!this.paper) {
+      return;
+    }
+    const { version, snapshots } = this.props;
+    if (version === 0 && !snapshots.length) {
       this.emptyCanvas();
       return;
     }
     const currentSnapShot: string = this.paper.project.exportJSON();
-    const versionSnapShot: string = this.props.snapshots[this.props.version];
+    const versionSnapShot: string = snapshots[ version ];
     if (currentSnapShot.length !== versionSnapShot.length) {
       this.emptyCanvas();
       this.paper.project.importJSON(versionSnapShot);
     }
   }
 
-
   render() {
     return (
-      <canvas id="canvas"></canvas>
+      <canvas id='canvas'></canvas>
     )
   }
 }
