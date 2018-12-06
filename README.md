@@ -1,7 +1,7 @@
-# JS-Paint
+# React-Paint
 
 Simple paint app made with front-end technologies.
-This project uses plain [Typescript](https://www.typescriptlang.org/), [Webpack](https://webpack.js.org/), [Paper.js](http://paperjs.org/) and [Jest](https://facebook.github.io/jest/) for testing.
+This project uses [React](https://reactjs.org/), [Redux](https://redux.js.org/), [Typescript](https://www.typescriptlang.org/), [Webpack](https://webpack.js.org/), [Paper.js](http://paperjs.org/) and [Jest](https://facebook.github.io/jest/) for testing.
 
 ## Requirements
 
