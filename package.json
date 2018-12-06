@@ -33,7 +33,10 @@
     "tslint": "^5.8.0",
     "typescript": "^2.6.1",
     "webpack": "^3.8.1",
-    "webpack-dev-server": "^2.9.5"
+    "webpack-dev-server": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=10.13.0"
   },
   "dependencies": {
     "events": "^1.1.1",
