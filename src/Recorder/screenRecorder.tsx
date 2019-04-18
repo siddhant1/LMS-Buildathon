@@ -36,7 +36,7 @@ class ScreenRecorder extends React.Component {
         });
         recorder.startRecording();
         (window as any).stopCallback = function() {
-          (window as any).stopCallback = null;
+          // (window as any).stopCallback = null;
           recorder.stopRecording(function() {
             const blob = recorder.getBlob();
             console.log(URL.createObjectURL(blob));
@@ -91,7 +91,7 @@ class ScreenRecorder extends React.Component {
   };
 
   captureCamera = (cb:any) => {
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(cb);
+    navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(cb);
   };
   keepStreamActive = (stream:any) => {
     var video = document.createElement('video');
