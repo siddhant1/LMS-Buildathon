@@ -14,33 +14,45 @@ import Toolbar from './Toolbar';
 //   clear: Function
 // }
 
-
 // duck
-import { setColor, setWeight } from './ducks/toolbar';
+import { setColor, setWeight, setHighlighter } from './ducks/toolbar';
 import { undoAction, redoAction, emptyAction } from '../canvas/ducks/canvas';
-
 
 class ToolbarContainer extends Component<any, {}> {
   render() {
-    const { children, ...props} = this.props;
-    return <Toolbar {...props} />
+    const { children, ...props } = this.props;
+    return (
+      <>
+        <input
+          type='checkbox'
+          name='highlightStatus'
+          onChange={(e) => {
+            console.log(e.target.checked);
+            this.props.setHighlighter(e.target.checked)
+          }}
+          style={{position: 'absolute', top: 175, left: 21}}
+        />
+          <div style={{position: 'absolute', top: 176, left: 45}}>Highlight</div>
+        <Toolbar {...props} />
+      </>
+    );
   }
 }
-
 
 function mapStateToProps(state: any, props: any) {
   const colors = state.toolbar.get('colors');
   const weights = state.toolbar.get('weights');
+  const highlightStatus = state.toolbar.get('highlight');
   const selectedColor = state.toolbar.get('selectedColor');
   const selectedWeight = state.toolbar.get('selectedWeight');
   return {
     colors,
     weights,
     selectedColor,
-    selectedWeight
+    selectedWeight,
+    highlightStatus
   };
 }
-
 
 function mapDispatchToProps(dispatch: any, props: any) {
   return {
@@ -58,9 +70,14 @@ function mapDispatchToProps(dispatch: any, props: any) {
     },
     clear: () => {
       dispatch(emptyAction());
+    },
+    setHighlighter: ( highlightStatus: boolean ) => {
+      dispatch(setHighlighter(highlightStatus));
     }
   };
 }
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(ToolbarContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ToolbarContainer);

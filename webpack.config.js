@@ -19,8 +19,16 @@ var config = {
         exclude: /node_modules/
       },
       {
+        test: /\.(js|jsx)?$/,
+        loader: 'babel-loader',
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015', 'react']
+        }
+      },
+      {
         test: /\.scss$/,
-        loaders: [ 'style-loader', 'css-loader', 'sass-loader' ]
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },
@@ -32,6 +40,6 @@ var config = {
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ]
-}
+};
 
 module.exports = config;
