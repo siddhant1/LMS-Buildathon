@@ -6,7 +6,7 @@
   "author": "Carlos Sanz Garcia <studiocam6@yahoo.es>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --progress --content-base ./dist",
+    "start": "webpack-dev-server --progress --content-base src/",
     "build": "webpack",
     "test": "jest --no-cache --verbose",
     "lint": "tslint -p tslint.json"
