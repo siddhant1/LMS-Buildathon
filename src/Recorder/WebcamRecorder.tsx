@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Link } from "react-router-dom";
 
 interface State {
   recording: boolean;
@@ -64,6 +65,11 @@ export default class WebCamRecorder extends React.Component<any, State> {
     // generate video url from blob
     const videoURL = window.URL.createObjectURL(blob);
     localStorage.setItem("video_url_webcam", videoURL);
+    (window as any).Swal.fire(
+      "Video Saved Successfully",
+      `Here's your video `+videoURL,
+      "success"
+    );
     (this as any).video.srcObject = null;
     (this as any).video.src = videoURL;
     (this as any).video.muted=false;
@@ -82,10 +88,22 @@ export default class WebCamRecorder extends React.Component<any, State> {
     const { recording, videos } = this.state;
     return (
       <div className="camera">
+      <Link to="/">
+          <img
+            src="../../../assets/images/Capture.PNG"
+            style={{ width: "200vh", height: 70 }}
+            alt=""
+          />
+        </Link>
+      <img
+          src='../assets/images/Artboard – 7.png'
+          style={{ position:'absolute',left:0,top:82 }}
+          alt=''
+        />
         <video
           controls={!recording}
           muted
-          style={{ width: 800, marginLeft: 220 }}
+          style={{ width: 800, marginLeft: 528, marginTop: 36,height:500 }}
           ref={v => {
             (this as any).video = v;
           }}

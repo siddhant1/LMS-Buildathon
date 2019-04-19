@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 class ScreenRecorder extends React.Component<any> {
   state = { imageUploaded: false };
@@ -7,10 +7,10 @@ class ScreenRecorder extends React.Component<any> {
       !navigator.getDisplayMedia &&
       (!navigator.mediaDevices as any).getDisplayMedia
     ) {
-      const error = 'Your browser does NOT supports getDisplayMedia API.';
-      document.querySelector('video').style.display = 'none';
-      document.getElementById('btn-start-recording').style.display = 'none';
-      document.getElementById('btn-stop-recording').style.display = 'none';
+      const error = "Your browser does NOT supports getDisplayMedia API.";
+      document.querySelector("video").style.display = "none";
+      document.getElementById("btn-start-recording").style.display = "none";
+      document.getElementById("btn-stop-recording").style.display = "none";
       throw new Error(error);
     }
     this.captureScreen((screen: any) => {
@@ -26,23 +26,28 @@ class ScreenRecorder extends React.Component<any> {
         camera.left = screen.width - camera.width;
         // eslint-disable-next-line
         var recorder = (window as any).RecordRTC([screen, camera], {
-          type: 'video',
-          mimeType: 'video/webm',
+          type: "video",
+          mimeType: "video/webm",
           previewStream: function(s: any) {
-            document.querySelector('video').muted = true;
-            document.querySelector('video').srcObject = s;
+            document.querySelector("video").muted = true;
+            document.querySelector("video").srcObject = s;
             console.log(this);
-          }
+          },
         });
         recorder.startRecording();
         (window as any).stopCallback = function() {
           // (window as any).stopCallback = null;
           recorder.stopRecording(function() {
             const blob = recorder.getBlob();
-            localStorage.setItem('video_screen_url',URL.createObjectURL(blob));
-            document.querySelector('video').srcObject = null;
-            document.querySelector('video').src = URL.createObjectURL(blob);
-            document.querySelector('video').muted = false;
+            localStorage.setItem("video_screen_url", URL.createObjectURL(blob));
+            (window as any).Swal.fire(
+              "Video Saved Successfully",
+              `Here's your video `+URL.createObjectURL(blob),
+              "success"
+            );
+            document.querySelector("video").srcObject = null;
+            document.querySelector("video").src = URL.createObjectURL(blob);
+            document.querySelector("video").muted = false;
             [screen, camera].forEach(function(stream) {
               stream.getTracks().forEach(function(track: any) {
                 track.stop();
@@ -56,7 +61,7 @@ class ScreenRecorder extends React.Component<any> {
 
   invokeGetDisplayMedia = (success: any, error: any) => {
     var displaymediastreamconstraints = {
-      video: true
+      video: true,
     };
     if ((navigator.mediaDevices as any).getDisplayMedia) {
       (navigator.mediaDevices as any)
@@ -71,9 +76,9 @@ class ScreenRecorder extends React.Component<any> {
     }
   };
 
-  captureScreen = (callback:any) => {
+  captureScreen = (callback: any) => {
     this.invokeGetDisplayMedia(
-      (screen:any) => {
+      (screen: any) => {
         this.addStreamStopListener(screen, function() {
           if ((window as any).stopCallback) {
             (window as any).stopCallback();
@@ -81,29 +86,29 @@ class ScreenRecorder extends React.Component<any> {
         });
         callback(screen);
       },
-      function(error:any) {
+      function(error: any) {
         console.error(error);
         alert(
-          'Unable to capture your screen. Please check console logs.\n' + error
+          "Unable to capture your screen. Please check console logs.\n" + error
         );
       }
     );
   };
 
-  captureCamera = (cb:any) => {
+  captureCamera = (cb: any) => {
     navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(cb);
   };
-  keepStreamActive = (stream:any) => {
-    var video = document.createElement('video');
+  keepStreamActive = (stream: any) => {
+    var video = document.createElement("video");
     video.muted = true;
     video.srcObject = stream;
-    video.style.display = 'none';
+    video.style.display = "none";
     (document.body || document.documentElement).appendChild(video);
   };
 
-  addStreamStopListener = (stream:any, callback:any) => {
+  addStreamStopListener = (stream: any, callback: any) => {
     stream.addEventListener(
-      'ended',
+      "ended",
       function() {
         callback();
         callback = function() {};
@@ -111,16 +116,16 @@ class ScreenRecorder extends React.Component<any> {
       false
     );
     stream.addEventListener(
-      'inactive',
+      "inactive",
       function() {
         callback();
         callback = function() {};
       },
       false
     );
-    stream.getTracks().forEach(function(track:any) {
+    stream.getTracks().forEach(function(track: any) {
       track.addEventListener(
-        'ended',
+        "ended",
         function() {
           callback();
           callback = function() {};
@@ -128,7 +133,7 @@ class ScreenRecorder extends React.Component<any> {
         false
       );
       track.addEventListener(
-        'inactive',
+        "inactive",
         function() {
           callback();
           callback = function() {};
@@ -144,8 +149,17 @@ class ScreenRecorder extends React.Component<any> {
           controls
           autoPlay
           playsInline
-          style={{ width: '40%', display:this.props.visible?'block':'none' }}
-        />
+          width={800}
+          muted
+          style={{
+            width: 800,
+            marginLeft: 528,
+            marginTop: 36,
+            display: this.props.isVisible ? "block" : "none",
+          }}
+        >
+          Streaming not available
+        </video>
       </>
     );
   }

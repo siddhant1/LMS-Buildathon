@@ -1,5 +1,6 @@
 import React from "react";
 import ScreenRecorder from "./screenRecorder";
+import { Link } from "react-router-dom";
 
 export default class ScreenRecorderContainer extends React.Component {
   state = { isRecording: false };
@@ -15,7 +16,20 @@ export default class ScreenRecorderContainer extends React.Component {
       <div>
         {this.state.isRecording && <ScreenRecorder />}
 
-        <video controls width="1250">
+        <Link to="/">
+          <img
+            src="../../../assets/images/Capture.PNG"
+            style={{ width: "200vh", height: 70 }}
+            alt=""
+          />
+        </Link>
+        <img
+          src="../assets/images/Artboard – 7.png"
+          style={{ position: "absolute", left: 0, top: 82 }}
+          alt=""
+        />
+
+        <video controls style={{ width: 800, marginLeft: 528, marginTop: 36 }}>
           <source
             src={localStorage.getItem("video_screen_url") || ""}
             type="video/webm"
