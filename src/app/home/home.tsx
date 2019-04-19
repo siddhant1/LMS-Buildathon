@@ -1,64 +1,77 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-const Home = () => {
-  return (
-<div>
-          <img
-            src="../../../assets/images/Capture.PNG"
-            style={{ width: "200vh", height: 70 }}
-            alt=""
-          />
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: '1fr 1fr 1fr',
-          justifyContent: 'space-between',
-          marginTop: 270,
-          // verticalRule:'dotted',
-          marginLeft: 370,
-          width: '50%'
-        }}
-      >
-        <Link to="/scribble" style={{ width: 100, height: 100, paddingRight: 20,paddingLeft: 20 }}>
-          <img
-            src="../../../assets/images/Artboard – 2.png"
-            alt=""
-            style={{ width: 100, height: 100 }}
-          />
-        </Link>
-        <Link to="/webcam" style={{ width: 100, height: 100, paddingRight: 20 }}>
-          <img
-            src="../../../assets/images/Artboard – 1.png"
-            alt=""
-            style={{ width: 100, height: 100 }}
-          />
-        </Link>
-        <Link to="/screenrec" style={{ width: 100, height: 100, paddingRight: 20 }}>
-          <img
-            src="../../../assets/images/Artboard – 3.png"
-            alt=""
-            style={{ width: 100, height: 100 }}
-          />
-        </Link>
-        <Link to="/scribble" style={{ width: 100, height: 100, paddingRight: 20}}>
-          <img
-            src="../../../assets/images/Artboard – 4.png"
-            alt=""
-            style={{ width: 100, height: 100 }}
-          />
-        </Link>
-        <Link to="/scribble" style={{ width: 100, height: 100, paddingRight: 20,paddinghLeft: 20 }}>
-          <img
-            src="../../../assets/images/Artboard – 5.png"
-            alt=""
-            style={{ width: 100, height: 100 }}
-          />
-        </Link>
+class Home extends React.Component {
+  render() {
+    return (
+      <div>
+        <img
+          src='../../../assets/images/Capture.PNG'
+          style={{ width: '200vh', height: 70 }}
+          alt=''
+        />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            marginTop: 270
+          }}
+        >
+          <Link to='/scribble' style={{ width: 100, height: 100, padding: 20 }}>
+            <img
+              src='../../../assets/images/Artboard – 2.png'
+              alt=''
+              style={{ width: 100, height: 100 }}
+            />
+          </Link>
+          <Link to='/webcam' style={{ width: 100, height: 100, padding: 20 }}>
+            <img
+              src='../../../assets/images/Artboard – 1.png'
+              alt=''
+              style={{ width: 100, height: 100 }}
+            />
+          </Link>
+          <Link
+            to='/screenrec'
+            style={{ width: 100, height: 100, padding: 20 }}
+          >
+            <img
+              src='../../../assets/images/Artboard – 3.png'
+              alt=''
+              style={{ width: 100, height: 100 }}
+            />
+          </Link>
+          <Link to='/scribble' style={{ width: 100, height: 100, padding: 20 }}>
+            <img
+              src='../../../assets/images/Artboard – 4.png'
+              alt=''
+              style={{ width: 100, height: 100 }}
+            />
+          </Link>
+          <div
+            onClick={() => {
+              (this.props as any).history.push('/scribble');
+              setTimeout(
+                () => {
+                  const input = document.getElementById('Image_label');
+                  input.click();
+                },
+                1000
+              );
+            }}
+            style={{ width: 100, height: 100, padding: 20 ,cursor: 'pointer'}}
+          >
+            <img
+              src='../../../assets/images/Artboard – 5.png'
+              alt=''
+              style={{ width: 100, height: 100 }}
+            />
+          </div>
+        </div>
       </div>
-      </div>
-  
-  );
-};
+    );
+  }
+}
 
-export default Home;
+export default withRouter(Home as any);

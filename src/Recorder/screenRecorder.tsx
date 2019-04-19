@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ScreenRecorder extends React.Component {
+class ScreenRecorder extends React.Component<any> {
   state = { imageUploaded: false };
   componentDidMount() {
     if (
@@ -29,7 +29,7 @@ class ScreenRecorder extends React.Component {
           type: 'video',
           mimeType: 'video/webm',
           previewStream: function(s: any) {
-            document.querySelector('video').muted = false;
+            document.querySelector('video').muted = true;
             document.querySelector('video').srcObject = s;
             console.log(this);
           }
@@ -39,7 +39,7 @@ class ScreenRecorder extends React.Component {
           // (window as any).stopCallback = null;
           recorder.stopRecording(function() {
             const blob = recorder.getBlob();
-            console.log(URL.createObjectURL(blob));
+            localStorage.setItem('video_screen_url',URL.createObjectURL(blob));
             document.querySelector('video').srcObject = null;
             document.querySelector('video').src = URL.createObjectURL(blob);
             document.querySelector('video').muted = false;
@@ -144,7 +144,7 @@ class ScreenRecorder extends React.Component {
           controls
           autoPlay
           playsInline
-          style={{ width: '40%', display: 'none' }}
+          style={{ width: '40%', display:this.props.visible?'block':'none' }}
         />
       </>
     );

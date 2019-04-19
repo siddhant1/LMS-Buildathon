@@ -154,7 +154,7 @@ class Toolbar extends React.Component<any, {}> {
           <input
             type='File'
             name='Image'
-            id='Image'
+            id='Image_label'
             placeholder='Upload Image'
             required
             onChange={this.uploadFile}

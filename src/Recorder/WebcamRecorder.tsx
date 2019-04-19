@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 interface State {
-    recording:boolean,
-    videos:String[]
+  recording: boolean;
+  videos: String[];
 }
 const videoType = "video/webm";
 export default class WebCamRecorder extends React.Component<any, State> {
-  constructor(props:any) {
+  constructor(props: any) {
     super(props);
     this.state = {
       recording: false,
@@ -30,24 +30,25 @@ export default class WebCamRecorder extends React.Component<any, State> {
     // init data storage for video chunks
     (this as any).chunks = [];
     // listen for data from media recorder
-    (this as any).mediaRecorder.ondataavailable = (e:any) => {
+    (this as any).mediaRecorder.ondataavailable = (e: any) => {
       if (e.data && e.data.size > 0) {
         (this as any).chunks.push(e.data);
       }
     };
   }
 
-  startRecording(e:any) {
+  startRecording(e: any) {
     e.preventDefault();
     // wipe old data chunks
     (this as any).chunks = [];
+    (this as any).video.muted = true;
     // start recorder with 10ms buffer
     (this as any).mediaRecorder.start(10);
     // say that we're recording
     this.setState({ recording: true });
   }
 
-  stopRecording(e:any) {
+  stopRecording(e: any) {
     e.preventDefault();
     // stop the recorder
     (this as any).mediaRecorder.stop();
@@ -62,12 +63,16 @@ export default class WebCamRecorder extends React.Component<any, State> {
     const blob = new Blob((this as any).chunks, { type: videoType });
     // generate video url from blob
     const videoURL = window.URL.createObjectURL(blob);
+    localStorage.setItem("video_url_webcam", videoURL);
+    (this as any).video.srcObject = null;
+    (this as any).video.src = videoURL;
+    (this as any).video.muted=false;
     // append videoURL to list of saved videos for rendering
     const videos = (this as any).state.videos.concat([videoURL]);
     this.setState({ videos });
   }
 
-  deleteVideo(videoURL:any) {
+  deleteVideo(videoURL: any) {
     // filter out current videoURL from the list of saved videos
     const videos = this.state.videos.filter(v => v !== videoURL);
     this.setState({ videos });
@@ -77,35 +82,41 @@ export default class WebCamRecorder extends React.Component<any, State> {
     const { recording, videos } = this.state;
     return (
       <div className="camera">
-        <video 
-          style={{ width: 1000, marginLeft: 220 }}
+        <video
+          controls={!recording}
+          muted
+          style={{ width: 800, marginLeft: 220 }}
           ref={v => {
             (this as any).video = v;
           }}
-          
         >
           Video stream not available.
         </video>
+        <div style={{display: 'flex',flexDirection: 'row', justifyContent: 'center'}}>
+        <div><img src="../assets/images/recordicon.PNG" style={{width: 63, height: 40,marginLeft: 20}} alt=""/></div>
         <div>
           {!recording && (
-            <button onClick={e => this.startRecording(e)} style={{marginLeft: 220}}>Record</button>
+            <div><button
+              onClick={e => this.startRecording(e)}
+              style={{ marginLeft: 10,marginTop: 10 }}
+            >
+              Record
+            </button></div>
           )}
           {recording && (
-            <button onClick={e => this.stopRecording(e)} style={{marginLeft: 220}}>Stop</button>
+            <div><button
+              onClick={e => this.stopRecording(e)}
+              style={{ marginLeft: 10,marginTop: 10 }}
+            >
+              Stop
+            </button></div>
           )}
+           
+          
         </div>
-        <div>
-          <h3>Recorded videos:</h3>
-          {videos.map((videoURL, i) => (
-            <div key={`video_${i}`}>
-              <video style={{width: 200}} controls src={videoURL.toString()} autoPlay loop />
-              <div>
-                <button onClick={() => this.deleteVideo(videoURL)}>Delete</button>
-                <a href={videoURL.toString()}>Download</a>
-              </div>
-            </div>
-          ))}
+        <div><img src="../assets/images/time.PNG" style={{width: 63, height: 40,marginLeft: 20}} alt=""/></div>
         </div>
+        <div />
       </div>
     );
   }
